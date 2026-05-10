@@ -86,9 +86,6 @@ body {
 }
 
 .theme-toggle {
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--card-border);
     color: var(--text-main);
@@ -320,6 +317,7 @@ h1 {
     }
     
     .theme-toggle {
+        position: absolute;
         top: 1rem;
         right: 1rem;
     }
