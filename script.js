@@ -14,6 +14,24 @@ const iconPump = document.getElementById('icon-pump');
 const statusBadge = document.getElementById('connection-status');
 const statusText = statusBadge.querySelector('.status-text');
 const lastUpdate = document.getElementById('last-update');
+const themeToggle = document.getElementById('theme-toggle');
+const themeIcon = document.getElementById('theme-icon');
+
+// Theme Management
+let isLightMode = localStorage.getItem('theme') === 'light';
+if (isLightMode) {
+    document.body.classList.add('light-mode');
+    themeIcon.className = 'ph ph-moon';
+} else {
+    themeIcon.className = 'ph ph-sun';
+}
+
+function getChartColors() {
+    return {
+        text: isLightMode ? '#0f172a' : '#f8fafc',
+        track: isLightMode ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)'
+    };
+}
 
 // Chart Options Factory
 const createGaugeOptions = (color, valueFormatter) => {
@@ -29,7 +47,7 @@ const createGaugeOptions = (color, valueFormatter) => {
                 startAngle: -90,
                 endAngle: 90,
                 track: {
-                    background: "rgba(255, 255, 255, 0.05)",
+                    background: getChartColors().track,
                     strokeWidth: '97%',
                     margin: 5,
                     dropShadow: {
@@ -47,7 +65,7 @@ const createGaugeOptions = (color, valueFormatter) => {
                         offsetY: -5,
                         fontSize: '1.3rem',
                         fontWeight: '700',
-                        color: '#f8fafc',
+                        color: getChartColors().text,
                         formatter: valueFormatter
                     }
                 }
@@ -152,3 +170,30 @@ async function fetchData() {
 // Initial fetch and interval (every 2 seconds)
 fetchData();
 setInterval(fetchData, 2000);
+
+// Theme Toggle Event
+themeToggle.addEventListener('click', () => {
+    isLightMode = !isLightMode;
+    if (isLightMode) {
+        document.body.classList.add('light-mode');
+        themeIcon.className = 'ph ph-moon';
+        localStorage.setItem('theme', 'light');
+    } else {
+        document.body.classList.remove('light-mode');
+        themeIcon.className = 'ph ph-sun';
+        localStorage.setItem('theme', 'dark');
+    }
+    
+    // Update chart colors dynamically
+    const colors = getChartColors();
+    [tempChart, humChart, soilChart].forEach(chart => {
+        chart.updateOptions({
+            plotOptions: {
+                radialBar: {
+                    track: { background: colors.track },
+                    dataLabels: { value: { color: colors.text } }
+                }
+            }
+        });
+    });
+});
