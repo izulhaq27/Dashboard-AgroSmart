@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroSmart Dashboard</title>
+    <meta name="description" content="Dashboard monitoring sistem pertanian cerdas untuk suhu, kelembaban, dan tanah.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- ApexCharts for Gauge Diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="header-left">
+                <div class="logo">
+                    <i class="ph ph-plant"></i>
+                </div>
+                <div>
+                    <h1>AgroSmart IoT</h1>
+                    <p class="subtitle">Real-time Monitoring System</p>
+                </div>
+            </div>
+            <div class="status-badge" id="connection-status">
+                <span class="status-dot"></span>
+                <span class="status-text">Connecting...</span>
+            </div>
+        </header>
+
+        <main class="dashboard">
+            <!-- Temperature Card -->
+            <div class="card" id="card-temp">
+                <div class="card-header">
+                    <div class="icon-wrapper orange">
+                        <i class="ph ph-thermometer"></i>
+                    </div>
+                    <h2>Suhu Udara</h2>
+                </div>
+                <div class="card-body">
+                    <div id="chart-temp" class="chart-container"></div>
+                </div>
+            </div>
+
+            <!-- Humidity Card -->
+            <div class="card" id="card-hum">
+                <div class="card-header">
+                    <div class="icon-wrapper blue">
+                        <i class="ph ph-drop"></i>
+                    </div>
+                    <h2>Kelembaban Udara</h2>
+                </div>
+                <div class="card-body">
+                    <div id="chart-hum" class="chart-container"></div>
+                </div>
+            </div>
+
+            <!-- Soil Moisture Card -->
+            <div class="card" id="card-soil">
+                <div class="card-header">
+                    <div class="icon-wrapper brown">
+                        <i class="ph ph-potted-plant"></i>
+                    </div>
+                    <h2>Kelembaban Tanah</h2>
+                </div>
+                <div class="card-body">
+                    <div id="chart-soil" class="chart-container"></div>
+                </div>
+            </div>
+
+            <!-- Pump Status Card -->
+            <div class="card status-card" id="card-pump">
+                <div class="card-header">
+                    <div class="icon-wrapper green" id="icon-pump">
+                        <i class="ph ph-engine"></i>
+                    </div>
+                    <h2>Status Pompa</h2>
+                </div>
+                <div class="card-body center-content">
+                    <div class="pump-status" id="val-pump">
+                        OFF
+                    </div>
+                    <p class="pump-desc" id="pump-desc">Menunggu data...</p>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="footer">
+            <p>Terakhir diperbarui: <span id="last-update">--:--:--</span></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
