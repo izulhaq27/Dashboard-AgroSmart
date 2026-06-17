@@ -1,6 +1,6 @@
 const BLYNK_TOKEN = "EDraUDvtSJBZxqZD8znQnwuBH7XfNJkF";
 const API_URL = `https://blynk.cloud/external/api/get?token=${BLYNK_TOKEN}&V0&V1&V2`;
-const THRESHOLD = 2500; // Sesuai dengan kode Arduino
+const THRESHOLD = 1800; // Sesuai dengan kode Arduino
 
 // State
 let currentTemp = 0;
