@@ -127,17 +127,45 @@ function updateUI(data) {
     humChart.updateSeries([humPct]);
     soilChart.updateSeries([soilPct]);
 
-    // Pump Logic
+    // Pump Logic Simulation (4s ON, 5s OFF to match ESP32)
     if (currentSoil > THRESHOLD) {
-        elPump.textContent = 'ON';
-        elPump.className = 'pump-status on';
-        elPumpDesc.textContent = 'Tanah kering. Pompa menyala.';
-        iconPump.className = 'icon-wrapper green';
+        if (!window.isPumpBlinking) {
+            window.isPumpBlinking = true;
+            
+            function runPumpCycle() {
+                if (!window.isPumpBlinking) return;
+                
+                // State: ON (4 seconds)
+                elPump.textContent = 'ON';
+                elPump.className = 'pump-status on';
+                elPumpDesc.textContent = 'Pompa menyala (4 dtk)...';
+                iconPump.className = 'icon-wrapper green';
+                
+                window.pumpTimeout = setTimeout(() => {
+                    if (!window.isPumpBlinking) return;
+                    
+                    // State: OFF (5 seconds)
+                    elPump.textContent = 'OFF';
+                    elPump.className = 'pump-status off';
+                    elPumpDesc.textContent = 'Pompa istirahat (5 dtk)...';
+                    iconPump.className = 'icon-wrapper red';
+                }, 4000);
+            }
+            
+            runPumpCycle();
+            window.pumpInterval = setInterval(runPumpCycle, 9000);
+        }
     } else {
-        elPump.textContent = 'OFF';
-        elPump.className = 'pump-status off';
-        elPumpDesc.textContent = 'Kelembaban cukup. Pompa mati.';
-        iconPump.className = 'icon-wrapper red';
+        if (window.isPumpBlinking || window.isPumpBlinking === undefined) {
+            window.isPumpBlinking = false;
+            clearInterval(window.pumpInterval);
+            clearTimeout(window.pumpTimeout);
+            
+            elPump.textContent = 'OFF';
+            elPump.className = 'pump-status off';
+            elPumpDesc.textContent = 'Kelembaban cukup. Pompa mati.';
+            iconPump.className = 'icon-wrapper red';
+        }
     }
 
     // Update Timestamp
